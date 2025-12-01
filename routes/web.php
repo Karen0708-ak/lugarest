@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ProvinciaController;
+use App\Http\Controllers\TiposController;
+use App\Http\Controllers\LugaresTController;
 
 
 Route::get('/', function () {
@@ -18,7 +21,7 @@ Route::post('/login', function (Request $request) {
 
     if (Auth::attempt($credentials, $request->filled('remember'))) {
         $request->session()->regenerate();
-        return redirect()->intended('/lugares');
+        return redirect()->intended('/lugarest');
     }
 
     return back()->withErrors(['email' => 'Credenciales incorrectas'])->withInput();
@@ -29,6 +32,17 @@ Route::get('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
+
+
 Route::middleware('auth')->group(function () {
-    Route::get('/lugares', fn() => view('lugarestu.index'))->name('lugares.index');
+
+    // Provincia
+    Route::resource('provincias', ProvinciaController::class);
+
+    // Tipos de Atracción
+    Route::resource('tipos', TiposController::class);
+
+    // Lugares Turísticos
+    Route::resource('lugarest', LugaresTController::class);
+
 });

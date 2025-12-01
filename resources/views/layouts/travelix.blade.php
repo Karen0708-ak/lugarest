@@ -7,6 +7,25 @@
 <meta name="description" content="Travelix Project">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
+
+
+<!-- DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+
 <link rel="stylesheet" type="text/css" href="{{ asset('travelix/styles/bootstrap4/bootstrap.min.css') }}">
 <link href="{{ asset('travelix/plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="{{ asset('travelix/plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
@@ -14,7 +33,6 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('travelix/plugins/OwlCarousel2-2.2.1/animate.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('travelix/styles/main_styles.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('travelix/styles/responsive.css') }}">
-
 
 
 
@@ -42,11 +60,19 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 100%;
-        max-width: 420px; /* tamaño controlado del formulario */
+        
+        width: 90%;            /* Ocupa casi todo el ancho de la pantalla */
+        max-width: 1200px;     /* Máximo ancho para pantallas grandes */
+        max-height: 90vh;       /* Altura máxima para no salir de la pantalla */
+        
         padding: 20px;
         text-align: center;
+        
+        overflow-y: auto;      /* Scroll vertical si el contenido es muy alto */
+        background: rgba(255,255,255,0.05); /* Fondo semi-transparente opcional */
+        border-radius: 12px;   /* Esquinas redondeadas */
     }
+
 
     .top_bar {
         height: 32px !important;
@@ -74,6 +100,7 @@
 
 <body>
 
+
 <div class="super_container">
 	
 	<!-- Header -->
@@ -94,11 +121,9 @@
 						</div>
 						<div class="main_nav_container ml-auto">
 							<ul class="main_nav_list">
-								<li class="main_nav_item"><a href="{{ url('/') }}">home</a></li>
-								<li class="main_nav_item"><a href="{{ url('about') }}">about us</a></li>
-								<li class="main_nav_item"><a href="{{ url('offers') }}">offers</a></li>
-								<li class="main_nav_item"><a href="{{ url('blog') }}">news</a></li>
-								<li class="main_nav_item"><a href="{{ url('contact') }}">contact</a></li>
+								<li class="main_nav_item"><a href="{{ route('provincias.index') }}">Provincias</a></li>
+								<li class="main_nav_item"><a href="{{ route('lugarest.index') }}">Lugares</a></li>
+								<li class="main_nav_item"><a href="{{ route('tipos.index') }}">Tipos de Lugares</a></li>
 							</ul>
 						</div>
 						<div class="content_search ml-lg-0 ml-auto">
@@ -165,11 +190,12 @@
             <!-- Aquí irá tu formulario encima -->
             <div class="home_overlay_content">
                 @yield('content')
+
             </div>
         </div>
     </div>
 
-
+    
 	<!-- Search -->
 
 	
@@ -315,15 +341,21 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			</div>
 		</div>
 	</div>
+    
 
 </div>
 
-<script src="{{ asset('travelix/js/jquery-3.2.1.min.js') }}"></script>
+
+
 <script src="{{ asset('travelix/styles/bootstrap4/popper.js') }}"></script>
 <script src="{{ asset('travelix/styles/bootstrap4/bootstrap.min.js') }}"></script>
 <script src="{{ asset('travelix/plugins/OwlCarousel2-2.2.1/owl.carousel.js') }}"></script>
 <script src="{{ asset('travelix/plugins/easing/easing.js') }}"></script>
 <script src="{{ asset('travelix/js/custom.js') }}"></script>
+
+
+
+
 </body>
 
 </html>
