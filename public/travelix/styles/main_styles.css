@@ -2154,3 +2154,52 @@ section
 {
 	color: #FFFFFF;
 }
+
+
+/* Asegúrate que el contenedor del slider tenga position: relative; si no lo pones inline */
+.home_slider_container { position: relative; }
+
+/* Overlay centrado y caja morada/transparente */
+.hero-overlay {
+  position: absolute;
+  top: 50%;              /* ajustar para subir/bajar */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;          /* sobre la imagen del slider */
+  width: 90%;
+  max-width: 420px;      /* ancho de la caja */
+  padding: 28px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(141,79,255,0.22), rgba(90,40,140,0.32));
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px); /* opcional, elegante */
+  color: #fff;
+}
+
+/* Inputs dentro de la caja (contraste sobre morado) */
+.hero-overlay .form-control {
+  background: rgba(255,255,255,0.95);
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #222;
+}
+
+/* Botón principal */
+.hero-overlay .btn-primary {
+  background: linear-gradient(45deg,#8d4fff,#fa9e1b);
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Responsive: más estrecho en móviles y menos padding */
+@media (max-width: 576px) {
+  .hero-overlay {
+    max-width: 320px;
+    padding: 18px;
+    top: 58%; /* bajar un poco si hace falta */
+  }
+}
