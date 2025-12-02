@@ -7,8 +7,18 @@
 <meta name="description" content="Travelix Project">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- 2. jQuery Validation -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/localization/messages_es.min.js"></script>
+    
+    <!-- 3. Bootstrap CSS & JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -94,7 +104,29 @@
         font-size: 14px;
         padding: 5px 12px;
     }
+
+.error {
+  color: red;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  margin-top: 6px;
+}
+
+.form-control.error {
+  border: 2px solid #ff4d4d !important;
+  background: rgba(255, 77, 77, 0.03);
+}
+
+.select.error {
+  border: 2px solid #ff4d4d !important;
+}
+
+
+input[readonly].error {
+  border: 2px dashed #ff4d4d !important;
+}
 </style>
+
 
 </head>
 

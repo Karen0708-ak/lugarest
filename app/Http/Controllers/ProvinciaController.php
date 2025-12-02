@@ -79,11 +79,15 @@ class ProvinciaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
         $provincia = Provincia::find($id);
 
+        if (!$provincia) {
+            return back()->with('error', 'La provincia no existe.');
+        }
+
+        // VALIDA QUE TENGA LUGARES
         if ($provincia->lugares()->exists()) {
             return back()->with('error', 'No se puede eliminar esta provincia porque tiene lugares turísticos asociados.');
         }
@@ -91,4 +95,5 @@ class ProvinciaController extends Controller
         $provincia->delete();
         return back()->with('success', 'Provincia eliminada correctamente.');
     }
+
 }

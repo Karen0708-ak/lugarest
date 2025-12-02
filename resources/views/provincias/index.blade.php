@@ -49,10 +49,15 @@
 
 <script>
 $(document).ready(function() {
-    // Confirmación de eliminación
-    $('.btn-eliminar').on('click', function(e) {
-        e.preventDefault();
+    // Confirmación de eliminación CORREGIDA
+    $(document).on('click', '.btn-eliminar', function(e) {
+        e.preventDefault(); // Esto es IMPORTANTE
+        
         const form = $(this).closest('form');
+        const button = $(this);
+        
+        // Deshabilitar el botón para evitar doble click
+        button.prop('disabled', true);
 
         Swal.fire({
             title: '¿Estás seguro?',
@@ -62,11 +67,16 @@ $(document).ready(function() {
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick: false,
+            allowEscapeKey: false
         }).then((result) => {
             if (result.isConfirmed) {
+                // Enviar el formulario
                 form.submit();
             } else {
+                // Rehabilitar el botón si cancela
+                button.prop('disabled', false);
                 Swal.fire(
                     'Cancelado',
                     'La provincia no fue eliminada.',

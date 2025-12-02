@@ -80,11 +80,15 @@ class TiposController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
         $tipo = Tipos::find($id);
 
+        if (!$tipo) {
+            return back()->with('error', 'El tipo no existe.');
+        }
+
+        // VALIDA QUE TENGA LUGARES
         if ($tipo->lugares()->exists()) {
             return back()->with('error', 'No se puede eliminar este tipo porque tiene lugares asociados.');
         }
@@ -92,4 +96,5 @@ class TiposController extends Controller
         $tipo->delete();
         return back()->with('success', 'Tipo eliminado correctamente.');
     }
+
 }

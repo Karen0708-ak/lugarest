@@ -10,25 +10,25 @@
 
             <div class="col-md-6">
                 <label for="NombreLugar" class="form-label text-white">Nombre del Lugar</label>
-                <input type="text" class="form-control" id="NombreLugar" name="NombreLugar" required>
+                <input type="text" class="form-control" id="NombreLugar" name="NombreLugar" >
             </div>
 
             <div class="col-md-6">
                 <label for="IdProvi" class="form-label text-white">Provincia</label>
-                <select class="form-control" id="IdProvi" name="IdProvi" required>
+                <select class="form-control" id="IdProvi" name="IdProvi">
                     <option value="">Seleccione una provincia</option>
                     @foreach($provincias as $provincia)
-                        <option value="{{ $provincia->IdProvi }}">{{ $provincia->Nombre }}</option>
+                        <option value="{{ $provincia->Id }}">{{ $provincia->Nombre }}</option>
                     @endforeach
                 </select>
             </div>
 
             <div class="col-md-6">
                 <label for="IdTipoA" class="form-label text-white">Tipo de Atracción</label>
-                <select class="form-control" id="IdTipoA" name="IdTipoA" required>
+                <select class="form-control" id="IdTipoA" name="IdTipoA">
                     <option value="">Seleccione un tipo</option>
                     @foreach($tipos as $tipo)
-                        <option value="{{ $tipo->IdTipoA }}">{{ $tipo->Nombre }}</option>
+                        <option value="{{ $tipo->Id }}">{{ $tipo->Nombre }}</option>
                     @endforeach
                 </select>
             </div>
@@ -36,6 +36,7 @@
             <div class="col-md-6">
                 <label for="AnioCreacion" class="form-label text-white">Año de Creación</label>
                 <input type="number" class="form-control" id="AnioCreacion" name="AnioCreacion">
+                <br>
             </div>
 
             <div class="col-12">
@@ -44,8 +45,14 @@
             </div>
 
             <div class="col-md-6">
-                <label for="Accesibilidad" class="form-label text-white">Accesibilidad</label>
-                <input type="text" class="form-control" id="Accesibilidad" name="Accesibilidad">
+            <label  class="form-label text-white">Accesibilidad</label>
+            <br>
+                <select class="form-control" id="Accesibilidad" name="Accesibilidad" >
+                    <option value="">Seleccione una opción</option>
+                    <option value="Fácil">Fácil</option>
+                    <option value="Difícil">Difícil</option>
+                </select>
+            <br>
                 <div class="mt-2">
                     <label for="Latitud" class="form-label text-white">Latitud</label>
                     <input type="text" class="form-control mb-2" id="Latitud" name="Latitud" readonly>
@@ -88,92 +95,87 @@ function initMap() {
         document.getElementById('Longitud').value = this.getPosition().lng();
     });
 }
-
+</script>
 
 <script>
-$(document).ready(function() {
 
-    $("#frm_lugar").validate({
-        rules:{
-            "NombreLugar":{
-                required:true,
-                minlength:5,
-                maxlength:40,
-                pattern: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
-            },
-            "IdProvi":{
-                required:true
-            },
-            "IdTipoA":{
-                required:true
-            },
-            "AnioCreacion":{
-                required:true,
-                digits:true,
-                minlength:4,
-                maxlength:4
-            },
-            "Descripcion":{
-                required:true,
-                minlength:20,
-                maxlength:300
-            },
-            "Accesibilidad":{
-                required:true,
-                minlength:5,
-                maxlength:60
-            },
-            "Latitud":{
-                required:true
-            },
-            "Longitud":{
-                required:true
-            }
+
+$("#frm_lugar").validate({
+    ignore: [],
+    rules: {
+        NombreLugar: {
+            required: true,
+            minlength: 5,
+            maxlength: 40,
+            pattern: "^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]+$"
         },
-
-        messages:{
-            "NombreLugar":{
-                required:"Este campo es obligatorio",
-                minlength:"Debe ingresar mínimo 5 caracteres",
-                maxlength:"Máximo 40 caracteres",
-                pattern:"Solo se permiten letras y espacios"
-            },
-            "IdProvi":{
-                required:"Debe seleccionar una provincia"
-            },
-            "IdTipoA":{
-                required:"Debe seleccionar un tipo"
-            },
-            "AnioCreacion":{
-                required:"Campo obligatorio",
-                digits:"Solo se permiten números",
-                minlength:"Debe ingresar 4 dígitos",
-                maxlength:"Debe ingresar 4 dígitos"
-            },
-            "Descripcion":{
-                required:"Este campo es obligatorio",
-                minlength:"Debe ingresar mínimo 20 caracteres",
-                maxlength:"Máximo 300 caracteres"
-            },
-            "Accesibilidad":{
-                required:"Este campo es obligatorio",
-                minlength:"Debe ingresar mínimo 5 caracteres",
-                maxlength:"Máximo 60 caracteres"
-            },
-            "Latitud":{
-                required:"Debe seleccionar la ubicación en el mapa"
-            },
-            "Longitud":{
-                required:"Debe seleccionar la ubicación en el mapa"
-            }
+        IdProvi: {
+            required: true
+        },
+        IdTipoA: {
+            required: true
+        },
+        Latitud: {
+            required: true,
+            number: true
+        },
+        Longitud: {
+            required: true,
+            number: true
+        },
+        Descripcion: {
+            required: true,
+            minlength: 10,
+            maxlength: 300
+        },
+        AnioCreacion: {
+            required: true,
+            digits: true,
+            minlength: 4,
+            maxlength: 4,
+            max: 2025,  
+            min: 1000     
+        },
+        Accesibilidad: {
+            required: true
         }
-    });
-
+    },
+    messages: {
+        NombreLugar: {
+            required: "Este campo es obligatorio.",
+            minlength: "Debe tener al menos 5 caracteres.",
+            pattern: "Solo se permiten letras y espacios."
+        },
+        IdProvi: {
+            required: "Seleccione una provincia."
+        },
+        IdTipoA: {
+            required: "Seleccione un tipo de atracción."
+        },
+        Latitud: {
+            required: "Ingrese la latitud."
+        },
+        Longitud: {
+            required: "Ingrese la longitud."
+        },
+        Descripcion: {
+            required: "Ingrese una descripción."
+        },
+        AnioCreacion: {
+            required: "Ingrese el año de creación.",
+            max: "El año no puede ser mayor a 2025.",
+            min: "Ingrese un año válido (mínimo 1000)."
+        },
+        Accesibilidad: {
+            required: "Seleccione una opción."
+        }
+    }
 });
-</script>
 
 </script>
+
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAr9nkZqo-8r4BIwIBe09aHs9oYSGqDJwY&callback=initMap">
-    </script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAr9nkZqo-8r4BIwIBe09aHs9oYSGqDJwY&callback=initMap">
+</script>
+
 @endsection
