@@ -82,15 +82,13 @@ class ProvinciaController extends Controller
     public function destroy(string $id)
     {
         //
-        $provincia = Provincia::findOrFail($id);
+        $provincia = Provincia::find($id);
 
         if ($provincia->lugares()->exists()) {
-            return redirect()->route('provincias.index')
-                            ->with('error', 'No se puede eliminar. Esta provincia tiene lugares turísticos asociados.');
+            return back()->with('error', 'No se puede eliminar esta provincia porque tiene lugares turísticos asociados.');
         }
-        $provincia->delete();
 
-        return redirect()->route('provincias.index')
-                        ->with('success', 'Provincia eliminada correctamente');
+        $provincia->delete();
+        return back()->with('success', 'Provincia eliminada correctamente.');
     }
 }

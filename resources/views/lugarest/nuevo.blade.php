@@ -4,7 +4,7 @@
 <div class="container my-5" style="background: rgba(141, 79, 255, 0.16); padding:30px; border-radius:12px; backdrop-filter: blur(3px);">
     <h1 class="text-center mb-4" style="color:white;">Registrar Nuevo Lugar Turístico</h1>
 
-    <form action="{{ route('lugarest.store') }}" method="POST">
+    <form id="frm_lugar" action="{{ route('lugarest.store') }}" method="POST">
         @csrf
         <div class="row g-3">
 
@@ -88,6 +88,90 @@ function initMap() {
         document.getElementById('Longitud').value = this.getPosition().lng();
     });
 }
+
+
+<script>
+$(document).ready(function() {
+
+    $("#frm_lugar").validate({
+        rules:{
+            "NombreLugar":{
+                required:true,
+                minlength:5,
+                maxlength:40,
+                pattern: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
+            },
+            "IdProvi":{
+                required:true
+            },
+            "IdTipoA":{
+                required:true
+            },
+            "AnioCreacion":{
+                required:true,
+                digits:true,
+                minlength:4,
+                maxlength:4
+            },
+            "Descripcion":{
+                required:true,
+                minlength:20,
+                maxlength:300
+            },
+            "Accesibilidad":{
+                required:true,
+                minlength:5,
+                maxlength:60
+            },
+            "Latitud":{
+                required:true
+            },
+            "Longitud":{
+                required:true
+            }
+        },
+
+        messages:{
+            "NombreLugar":{
+                required:"Este campo es obligatorio",
+                minlength:"Debe ingresar mínimo 5 caracteres",
+                maxlength:"Máximo 40 caracteres",
+                pattern:"Solo se permiten letras y espacios"
+            },
+            "IdProvi":{
+                required:"Debe seleccionar una provincia"
+            },
+            "IdTipoA":{
+                required:"Debe seleccionar un tipo"
+            },
+            "AnioCreacion":{
+                required:"Campo obligatorio",
+                digits:"Solo se permiten números",
+                minlength:"Debe ingresar 4 dígitos",
+                maxlength:"Debe ingresar 4 dígitos"
+            },
+            "Descripcion":{
+                required:"Este campo es obligatorio",
+                minlength:"Debe ingresar mínimo 20 caracteres",
+                maxlength:"Máximo 300 caracteres"
+            },
+            "Accesibilidad":{
+                required:"Este campo es obligatorio",
+                minlength:"Debe ingresar mínimo 5 caracteres",
+                maxlength:"Máximo 60 caracteres"
+            },
+            "Latitud":{
+                required:"Debe seleccionar la ubicación en el mapa"
+            },
+            "Longitud":{
+                required:"Debe seleccionar la ubicación en el mapa"
+            }
+        }
+    });
+
+});
+</script>
+
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAr9nkZqo-8r4BIwIBe09aHs9oYSGqDJwY&callback=initMap">

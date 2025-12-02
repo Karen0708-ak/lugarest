@@ -83,16 +83,13 @@ class TiposController extends Controller
     public function destroy(string $id)
     {
         //
-        $tipo = Tipos::findOrFail($id);
+        $tipo = Tipos::find($id);
 
         if ($tipo->lugares()->exists()) {
-            return redirect()->route('tipos.index')
-                            ->with('error', 'No se puede eliminar. Este tipo tiene lugares turísticos asociados.');
+            return back()->with('error', 'No se puede eliminar este tipo porque tiene lugares asociados.');
         }
 
         $tipo->delete();
-
-        return redirect()->route('tipos.index')
-                        ->with('success', 'Tipo eliminado correctamente');
+        return back()->with('success', 'Tipo eliminado correctamente.');
     }
 }

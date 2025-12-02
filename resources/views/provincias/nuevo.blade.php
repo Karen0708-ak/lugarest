@@ -16,7 +16,7 @@
 
         <h2 style="text-align:center; margin-bottom:20px;">Registrar Nueva Provincia</h2>
 
-        <form action="{{ route('provincias.store') }}" method="POST">
+        <form id="frm_provincia" action="{{ route('provincias.store') }}" method="POST">
             @csrf
 
             <label><b>Nombre de la provincia</b></label>
@@ -31,6 +31,29 @@
     </div>
 
 </div>
+<script>
+$(document).ready(function() {
+    $("#frm_provincia").validate({
+        rules: {
+            Nombre: {
+                required: true,
+                minlength: 4,
+                maxlength: 25,
+                pattern: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
+            }
+        },
+        messages: {
+            Nombre: {
+                required: "Este campo es obligatorio",
+                minlength: "Debe tener mínimo 4 caracteres",
+                maxlength: "No puede superar los 25 caracteres",
+                pattern: "Solo se permiten letras y espacios"
+            }
+        }
+    });
+});
+</script>
+
 
 
 @endsection

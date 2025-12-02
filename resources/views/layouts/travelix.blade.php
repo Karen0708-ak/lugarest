@@ -191,6 +191,88 @@
             <div class="home_overlay_content">
                 @yield('content')
 
+				<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const swalOptions = (title, text, icon) => ({
+        title: title,
+        text: text,
+        icon: icon,
+        confirmButtonText: 'Aceptar',
+        allowOutsideClick: false,
+        backdrop: true,
+        customClass: {
+            popup: 'travelix-swal-popup',
+            title: 'travelix-swal-title',
+            content: 'travelix-swal-content',
+            confirmButton: 'travelix-swal-btn'
+        }
+    });
+
+    @if(session('success'))
+        Swal.fire(swalOptions('ÉXITO', '{{ session('success') }}', 'success'));
+    @endif
+
+    @if(session('error'))
+        Swal.fire(swalOptions('ERROR', '{{ session('error') }}', 'error'));
+    @endif
+
+    @if(session('message'))
+        Swal.fire(swalOptions('INFO', '{{ session('message') }}', 'info'));
+    @endif
+});
+</script>
+
+
+    <style>
+    /* Estilos SweetAlert adaptados a tu plantilla */
+    .travelix-swal-popup {
+        z-index: 9999 !important;
+        border-radius: 10px;
+        padding: 1.5em;
+        font-family: 'Poppins', sans-serif;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .travelix-swal-title {
+        font-size: 1.5em;
+        color: #333;
+        text-align: center;
+        margin-bottom: 0.5em;
+    }
+
+    .travelix-swal-content {
+        font-size: 1em;
+        color: #555;
+        text-align: center;
+    }
+
+    .travelix-swal-btn {
+        background-color: #ff4c3b;
+        color: #fff !important;
+        font-weight: 500;
+        border-radius: 5px;
+        padding: 0.5em 1.2em;
+        margin-top: 1em;
+        transition: background 0.3s;
+    }
+
+    .travelix-swal-btn:hover {
+        background-color: #e04335;
+    }
+
+	.swal2-container {
+            z-index: 999999 !important;
+            position: fixed !important;
+        }
+
+        .swal2-popup {
+            z-index: 999999 !important;
+        }
+    </style>
+
+    <!-- Para que otras vistas puedan empujar scripts específicos -->
+    @stack('scripts')
+
             </div>
         </div>
     </div>
@@ -345,13 +427,13 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 </div>
 
-
-
 <script src="{{ asset('travelix/styles/bootstrap4/popper.js') }}"></script>
 <script src="{{ asset('travelix/styles/bootstrap4/bootstrap.min.js') }}"></script>
 <script src="{{ asset('travelix/plugins/OwlCarousel2-2.2.1/owl.carousel.js') }}"></script>
 <script src="{{ asset('travelix/plugins/easing/easing.js') }}"></script>
 <script src="{{ asset('travelix/js/custom.js') }}"></script>
+<!-- jQuery Validation -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 
 
 
