@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Provincia;
 use App\Models\LugaresT; 
+
 class ProvinciaController extends Controller
 {
     /**
@@ -12,7 +13,6 @@ class ProvinciaController extends Controller
      */
     public function index()
     {
-        //
         $provincias = Provincia::all();
         return view('provincias.index', compact('provincias'));
     }
@@ -22,8 +22,8 @@ class ProvinciaController extends Controller
      */
     public function create()
     {
-        //
-        return view('provincias.nuevo');
+        $provinciasExistentes = Provincia::all(['Nombre']);
+        return view('provincias.nuevo', compact('provinciasExistentes'));
     }
 
     /**
@@ -31,7 +31,22 @@ class ProvinciaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'Nombre' => [
+                'required',
+                'min:4',
+                'max:25',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/',
+                'unique:provincias,Nombre'
+            ]
+        ], [
+            'Nombre.required' => 'El nombre es obligatorio',
+            'Nombre.min' => 'El nombre debe tener al menos 4 caracteres',
+            'Nombre.max' => 'El nombre no puede superar los 25 caracteres',
+            'Nombre.regex' => 'Solo se permiten letras y espacios',
+            'Nombre.unique' => 'Esta provincia ya existe'
+        ]);
+
         $datos = [
             'Nombre' => $request->Nombre
         ];
@@ -55,9 +70,9 @@ class ProvinciaController extends Controller
      */
     public function edit(string $id)
     {
-        //
         $provincia = Provincia::findOrFail($id);
-        return view('provincias.editar', compact('provincia'));
+        $provinciasExistentes = Provincia::where('id', '!=', $id)->get(['Nombre']);
+        return view('provincias.editar', compact('provincia', 'provinciasExistentes'));
     }
 
     /**
@@ -65,8 +80,23 @@ class ProvinciaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
         $provincia = Provincia::findOrFail($id);
+        
+        $request->validate([
+            'Nombre' => [
+                'required',
+                'min:4',
+                'max:25',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/',
+                'unique:provincias,Nombre,' . $id
+            ]
+        ], [
+            'Nombre.required' => 'El nombre es obligatorio',
+            'Nombre.min' => 'El nombre debe tener al menos 4 caracteres',
+            'Nombre.max' => 'El nombre no puede superar los 25 caracteres',
+            'Nombre.regex' => 'Solo se permiten letras y espacios',
+            'Nombre.unique' => 'Esta provincia ya existe'
+        ]);
 
         $provincia->update([
             'Nombre' => $request->Nombre
@@ -87,7 +117,7 @@ class ProvinciaController extends Controller
             return back()->with('error', 'La provincia no existe.');
         }
 
-        // VALIDA QUE TENGA LUGARES
+
         if ($provincia->lugares()->exists()) {
             return back()->with('error', 'No se puede eliminar esta provincia porque tiene lugares turísticos asociados.');
         }
@@ -96,4 +126,31 @@ class ProvinciaController extends Controller
         return back()->with('success', 'Provincia eliminada correctamente.');
     }
 
+    public function verificar(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string'
+        ]);
+        
+        $existe = Provincia::whereRaw('LOWER(Nombre) = ?', [strtolower($request->nombre)])->exists();
+        
+        return response()->json([
+            'disponible' => !$existe
+        ]);
+    }
+
+    public function verificarEdicion(Request $request, $id)
+    {
+        $request->validate([
+            'nombre' => 'required|string'
+        ]);
+        
+        $existe = Provincia::where('id', '!=', $id)
+                          ->whereRaw('LOWER(Nombre) = ?', [strtolower($request->nombre)])
+                          ->exists();
+        
+        return response()->json([
+            'disponible' => !$existe
+        ]);
+    }
 }

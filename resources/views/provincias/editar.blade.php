@@ -16,13 +16,16 @@
 
         <h2 style="text-align:center; margin-bottom:20px;">Editar Provincia</h2>
 
-        <form action="{{ route('provincias.update', $provincia) }}" method="POST">
-
+        <form id="frm_provincia_edit" action="{{ route('provincias.update', $provincia) }}" method="POST">
             @csrf
             @method('PUT')
 
             <label><b>Nombre de la provincia</b></label>
-            <input class="form-control mb-3" type="text" name="Nombre" value="{{ old('Nombre', $provincia->Nombre) }}" required>
+            <input class="form-control mb-3" type="text" name="Nombre" id="Nombre" value="{{ old('Nombre', $provincia->Nombre) }}">
+            <div class="text-danger" id="error-Nombre"></div>
+            
+            <!-- Campo oculto con provincias existentes en JSON (excluyendo la actual) -->
+            <input type="hidden" id="provincias_existentes" value="{{ $provinciasExistentes->pluck('Nombre')->toJson() }}">
 
             <div style="display:flex; justify-content:space-between; margin-top:10px;">
                 <button class="btn btn-success" type="submit">Actualizar</button>
@@ -33,5 +36,72 @@
     </div>
 
 </div>
+
+<!-- Cargar jQuery y jQuery Validation -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.5/additional-methods.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Obtener provincias existentes del campo oculto
+    const provinciasExistentes = JSON.parse($('#provincias_existentes').val() || '[]');
+    
+    // Método para validar que no sea duplicado
+    $.validator.addMethod("noDuplicado", function(value, element) {
+        if (!value || value.trim().length < 4) return true;
+        
+        const valorNormalizado = value.trim().toLowerCase();
+        
+        // Verificar si existe en la lista de provincias
+        for (const nombreProvincia of provinciasExistentes) {
+            if (nombreProvincia.trim().toLowerCase() === valorNormalizado) {
+                return false; // Es duplicado
+            }
+        }
+        return true; // No es duplicado
+    }, "Esta provincia ya existe.");
+
+    // Método para validar solo letras y espacios
+    $.validator.addMethod("soloLetrasEspacios", function(value, element) {
+        return this.optional(element) || /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(value);
+    }, "Solo se permiten letras y espacios.");
+
+    // Configuración de validación
+    $("#frm_provincia_edit").validate({
+        rules: {
+            Nombre: {
+                required: true,
+                minlength: 4,
+                maxlength: 25,
+                soloLetrasEspacios: true,
+                noDuplicado: true
+            }
+        },
+        messages: {
+            Nombre: {
+                required: "Este campo es obligatorio",
+                minlength: "Debe tener mínimo 4 caracteres",
+                maxlength: "No puede superar los 25 caracteres",
+                soloLetrasEspacios: "Solo se permiten letras y espacios"
+            }
+        },
+        errorPlacement: function(error, element) {
+            const errorElement = document.getElementById('error-' + element.attr('name'));
+            if (errorElement) {
+                errorElement.innerHTML = error.text();
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        highlight: function(element) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('is-invalid').addClass('is-valid');
+        }
+    });
+});
+</script>
 
 @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.travelix')
+@extends('layouts.tr')
 
 @section('content')
 
@@ -22,7 +22,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('login.process') }}">
+        <form id="loginForm" method="POST" action="{{ route('login.process') }}">
             @csrf
 
             <div class="form-group mb-2">
@@ -48,3 +48,40 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    $("#loginForm").validate({
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                minlength: 6
+            }
+        },
+        messages: {
+            email: {
+                required: "Ingrese su correo electrónico.",
+                email: "Ingrese un correo válido."
+            },
+            password: {
+                required: "Ingrese su contraseña.",
+                minlength: "La contraseña debe tener al menos 6 caracteres."
+            }
+        },
+        errorClass: "error",
+        errorElement: "span",
+        highlight: function(element) {
+            $(element).addClass("error");
+        },
+        unhighlight: function(element) {
+            $(element).removeClass("error");
+        }
+    });
+});
+</script>
+@endpush

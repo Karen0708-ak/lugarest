@@ -5,12 +5,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ProvinciaController;
 use App\Http\Controllers\TiposController;
 use App\Http\Controllers\LugaresTController;
-
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -32,17 +31,20 @@ Route::get('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
-
-
 Route::middleware('auth')->group(function () {
 
-    // Provincia
+
     Route::resource('provincias', ProvinciaController::class);
 
-    // Tipos de Atracción
+    Route::post('/provincias/verificar', [ProvinciaController::class, 'verificar'])->name('provincias.verificar');
+    Route::post('/provincias/{id}/verificar', [ProvinciaController::class, 'verificarEdicion'])->name('provincias.verificar.edicion');
+
     Route::resource('tipos', TiposController::class);
 
-    // Lugares Turísticos
+    Route::post('/tipos/verificar', [TiposController::class, 'verificar'])->name('tipos.verificar');
+    Route::post('/tipos/{id}/verificar', [TiposController::class, 'verificarEdicion'])->name('tipos.verificar.edicion');
+
+
     Route::resource('lugarest', LugaresTController::class);
 
 });

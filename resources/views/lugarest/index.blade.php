@@ -13,7 +13,7 @@
 
     <div class="table-responsive" style="background: rgba(141, 79, 255, 0.16); padding:20px; border-radius:12px; backdrop-filter: blur(5px);">
         <table class="table table-hover table-bordered align-middle" id="lugares-table">
-            <thead style="background-color: rgba(0, 0, 0, 0.85); color:white;">
+            <thead style="background-color: rgba(0, 0, 0, 0.65); color:purple;">
                 <tr>
                     <th>Nombre</th>
                     <th>Provincia</th>
